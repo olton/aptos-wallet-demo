@@ -1,0 +1,24 @@
+{
+    "name": "@olton/aptos-wallet-demo",
+    "version": "0.1.0",
+    "license": "MIT",
+    "source": "src/index.pug",
+    "scripts": {
+        "start": "shx rm -rf .output/* && parcel --open --dist-dir .output",
+        "prebuild": "shx rm -rf .build/*",
+        "build": "parcel build --dist-dir .build --public-url ."
+    },
+    "devDependencies": {
+        "@parcel/transformer-pug": "^2.4.1",
+        "parcel": "^2.4.1",
+        "pug": "^3.0.2",
+        "shx": "^0.3.3"
+    },
+    "staticFiles": {},
+    "browserslist": [
+        "last 1 Chrome versions",
+        "last 1 Firefox versions",
+        "last 1 Opera versions",
+        "last 1 Edge versions"
+    ]
+}
