@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+        link(rel="stylesheet", href="vendor/metro4/css/metro-all.min.css")
+        link(rel="stylesheet", href="css/index.css")
+
+        title Aptos Demo Wallet v0.1.0
+    body.m4-cloack(style="padding-top: 52px")
+        section.bg-white.container-fluid.pos-fixed(style="top: 0; left: 0; right: 0;")
+            header.container.bg-white.border-bottom.bd-system.pos-relative(data-role="app-bar" data-expand-point="fs")
+                a.brand.no-hover.d-flex.flex-align-center
+                    div.app-bar-logo
+                        img(src="images/aptos_word.svg")
+                    div.ml-2.reduce-1 |
+                    div.ml-2
+                        span DEMO
+                        span.ml-1 WALLET
+
+                ul.app-bar-menu.ml-auto
+                    li
+                        a(href="/logout") Logout
+
+        section.container-fluid
+            div.container
+                div.text-leader.text-center.mt-2 Welcome to Aptos Demo Wallet
+                div.text-center.mt-4
+                    div.text-bold Address
+                    a#address.fg-cyan.text-leader.copy-data-to-clipboard.c-pointer( title="Click to copy address to clipboard" )
+
+        section.container-fluid
+            div.container
+                div.address-balance
+                    div#address-balance 0
+                    div coins
+
+                div.d-flex.flex-justify-center.flex-row.flex-wrap
+                    button.button.secondary.m-1.border-radius-4(onclick="chargeAccount(this)")
+                        span.caption Charge Address
+                        span.icon.mif-2x.mif-gas-station
+
+                    button.button.success.m-1.border-radius-4
+                        span.caption Send Coins
+                        span.icon.mif-2x.mif-move-up
+
+                    button.button.success.m-1.border-radius-4
+                        span.caption Receive Coins
+                        span.icon.mif-2x.mif-move-down
+
+                    button.button.warning.m-1.border-radius-4
+                        span.caption History
+                        span.icon.mif-2x.mif-history
+
+
+        script.
+            globalThis.config = !{clientConfig}
+            globalThis.dateFormat = !{dateFormat}
+            globalThis.wallet = !{wallet}
+            globalThis.darkMode = false
+
+        script(src="vendor/metro4/js/metro.min.js")
+        script(type="module", src="js/metro.conf.js")
+        script(type="module", src="js/utils.js")
+        script(type="module", src="js/wallet.js")
+        script(type="module", src="js/websocket.js")

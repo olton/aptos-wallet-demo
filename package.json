@@ -3,16 +3,30 @@
     "version": "0.1.0",
     "license": "MIT",
     "source": "src/index.pug",
+    "main": "src/server/index.js",
+    "type": "module",
     "scripts": {
-        "start": "shx rm -rf .output/* && parcel --open --dist-dir .output",
-        "prebuild": "shx rm -rf .build/*",
-        "build": "parcel build --dist-dir .build --public-url ."
+        "start": "node --es-module-specifier-resolution=node .",
+        "dev": "nodemon --es-module-specifier-resolution=node ."
     },
     "devDependencies": {
-        "@parcel/transformer-pug": "^2.4.1",
-        "parcel": "^2.4.1",
-        "pug": "^3.0.2",
         "shx": "^0.3.3"
+    },
+    "dependencies": {
+        "@olton/datetime": "^2.0.8",
+        "assert": "^2.0.0",
+        "bip39": "^3.0.4",
+        "buffer": "^6.0.3",
+        "connect-redis": "^6.1.3",
+        "cross-fetch": "^3.1.5",
+        "express": "^4.17.3",
+        "express-session": "^1.17.2",
+        "js-sha3": "^0.8.0",
+        "pug": "^3.0.2",
+        "redis": "^4.0.6",
+        "serve-favicon": "^2.5.0",
+        "tweetnacl": "^1.0.3",
+        "ws": "^8.5.0"
     },
     "staticFiles": {},
     "browserslist": [

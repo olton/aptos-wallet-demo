@@ -1,0 +1,48 @@
+:root {
+  --body-background-color: #fff;
+  --form-background-color: #fff;
+  --text-color: #262626;
+  --border-radius: 4px;
+  --border-color: #d9d9d9;
+  --balance-info-background: #fef5e6;
+  --balance-info-accent-background: #f59f00;
+}
+body {
+  background: var(--body-background-color);
+  color: var(--text-color);
+}
+.bd-system {
+  border-color: var(--border-color) !important;
+}
+.aptos-logo,
+.app-bar-logo {
+  height: 1.8rem;
+  color: var(--text-color);
+}
+.aptos-logo img,
+.app-bar-logo img {
+  height: 100%;
+}
+.app-bar-logo {
+  height: 1rem;
+  line-height: 1;
+}
+.login-form {
+  width: 480px;
+  max-width: 90%;
+  padding: 10px 20px;
+  background: var(--form-background-color);
+  border-radius: var(--border-radius);
+}
+.address-balance {
+  background: var(--balance-info-background);
+  padding: 20px 40px;
+  margin: 10px 0;
+  border-radius: 10px;
+  text-align: center;
+}
+#address-balance {
+  font-size: 48px;
+  line-height: 1;
+}
+/*# sourceMappingURL=index.css.map */

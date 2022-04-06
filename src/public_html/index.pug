@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+        link(rel="stylesheet", href="vendor/metro4/css/metro-all.min.css")
+        link(rel="stylesheet", href="css/index.css")
+
+        title Aptos Demo Wallet v0.1.0
+    body.m4-cloack
+
+        script.
+            globalThis.config = !{clientConfig}
+            globalThis.dateFormat = !{dateFormat}
+            globalThis.darkMode = false
+
+        script(src="vendor/metro4/js/metro.min.js")
+        script(type="module", src="js/index.js")

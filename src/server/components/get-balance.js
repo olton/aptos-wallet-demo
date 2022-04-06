@@ -1,0 +1,23 @@
+import {RestClient} from "../aptos/rest-client.js";
+import {shorten} from "../helpers/shorten.js";
+
+export const checkAddress = async (address) => {
+    const rest = new RestClient(config.api.rest)
+
+    let account, balance
+
+    account = await rest.account(address)
+
+    if (!account.authentication_key) {
+        return false
+    }
+
+    balance = await rest.accountBalance(address)
+
+    return {
+        address,
+        account,
+        balance,
+        short: shorten(address, 7)
+    }
+}

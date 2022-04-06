@@ -1,0 +1,47 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
+
+        link(rel="stylesheet", href="vendor/metro4/css/metro-all.min.css")
+        link(rel="stylesheet", href="css/index.css")
+
+        title Login to Aptos Demo Wallet v0.1.0
+    body.m4-cloack.d-flex.flex-justify-center.flex-align-center
+        div.login-form.border.bd-system
+            div.d-flex.flex-row.flex-nowrap.flex-align-center
+                div.aptos-logo
+                    img(src="images/aptos_word.svg")
+                div.text-leader.ml-2.reduce-1 |
+                div.text-leader.ml-2.mb-2.mt-2
+                    span DEMO
+                    span.ml-1 WALLET
+
+            form(action="javascript:" onsubmit="login(this)")
+                div.mt-2.mb-4
+                    textarea(data-role="textarea" name="mnemonic" placeholder="Enter address mnemonic")
+                        | brick extend uncle company dizzy fatigue scan cash badge mass analyst deposit text trade winner congress fan trap coconut bind derive inmate bind staff
+
+                div.form-actions.d-flex
+                    button.button.info
+                        span Login to Wallet
+                    div.ml-auto.d-flex.flex-align-center
+                        span.reduce-2-fs.reduce-1 No Address?
+                        button.button.link.text-bold(onclick="test(); createWallet()")
+                            span Create It!
+
+            div.border-top.bd-system.text-center
+                div.text-small.mt-2.d-flex.flex-align-center.flex-justify-center
+                    span Copyright 2022 by
+                    a.ml-1.no-decor.fg-cyan(href="https://pimenov.com.ua") Serhii Pimenov.
+                    span.ml-1 From Ukraine for Aptos Community.
+
+
+        script.
+
+            globalThis.walletError = `!{walletError}`
+
+        script(src="vendor/metro4/js/metro.min.js")
+        script(type="module", src="js/metro.conf.js")
+        script(type="module", src="js/login.js")
