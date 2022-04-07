@@ -107,7 +107,10 @@ const route = () => {
 
     app.post('/send-coins', async (req, res) => {
         try {
-            const {sender, receiver, amount = 0} = req.body
+            let {sender, receiver, amount = 0} = req.body
+            if (receiver.substr(0, 2) === "0x") {
+                receiver = receiver.substr(2)
+            }
             assert(sender, "Sender address required")
             assert(receiver, "Receiver address required")
             assert(receiver.length === 64, "Receiver address length not right")
