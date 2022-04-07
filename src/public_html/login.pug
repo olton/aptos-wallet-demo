@@ -8,7 +8,7 @@ html(lang="en")
         link(rel="stylesheet", href="css/index.css")
 
         title Login to Aptos Demo Wallet v0.1.0
-    body.m4-cloack.d-flex.flex-justify-center.flex-align-center(style="background: #7e7e7e")
+    body.m4-cloak.d-flex.flex-justify-center.flex-align-center(style="background: #7e7e7e")
         div.login-form.border.bd-system
             div.d-flex.flex-row.flex-nowrap.flex-align-center
                 div.aptos-logo
@@ -21,7 +21,10 @@ html(lang="en")
 
             form(action="javascript:" onsubmit="login(this)")
                 div.mt-2.mb-4
-                    textarea(data-role="textarea" name="mnemonic" placeholder="Enter address mnemonic")
+                    textarea.w-100.h-100(data-role="textarea" name="mnemonic" placeholder="Enter address Mnemonic")
+
+                div.remark.warning
+                    | A mnemonic is a set of words in which an address is encoded.
 
                 div.form-actions.d-flex
                     button.button.info

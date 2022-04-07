@@ -23,6 +23,10 @@ const login = async (form) => {
         window.location.href = "/wallet"
     } catch (e) {
         Metro.toast.create(e.message, null, 5000, "alert")
+        $(".login-form").addClass("ani-horizontal")
+        setTimeout(()=>{
+            $(".login-form").removeClass("ani-horizontal")
+        }, 1000)
     } finally {
         button.disabled = false
     }
