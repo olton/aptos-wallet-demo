@@ -51,6 +51,7 @@ globalThis.updateTransactions = data => {
                 </td>
                 <td>
                     <span>${shorten(t.payload.arguments[0], 12)}</span>
+                    <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${t.payload.arguments[0]}" title="Click to copy address to clipboard"></span>
                     <div class="text-muted reduce-2">Hash: ${shorten(t.hash, 12)}</div>
                 </td>
                 <td>
