@@ -1,24 +1,21 @@
 import {entropyToMnemonic} from "bip39";
 import {Account} from "../aptos/account";
-import {FaucetClient} from "../aptos/faucet-client";
 
-export const createAddress = async () => {
+export const createAddress = () => {
     const account = new Account()
-    const faucet = new FaucetClient(config.api.faucet)
 
-    let address, seed, mnemonic, publicKey
+    let address, seed, mnemonic, publicKey, authKey
 
     address = account.address()
     seed = account.seed()
     publicKey = account.seed()
+    authKey = account.authKey()
     mnemonic = entropyToMnemonic(seed)
-
-    await faucet.fundAccount(address, 0)
 
     return {
         address,
         publicKey,
-        seed,
+        authKey,
         mnemonic
     }
 }

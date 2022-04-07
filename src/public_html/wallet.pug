@@ -38,20 +38,44 @@ html(lang="en")
 
                 div.d-flex.flex-justify-center.flex-row.flex-wrap
                     button.button.secondary.m-1.border-radius-4(onclick="chargeAccount(this)")
-                        span.caption Charge Address
+                        span.caption Charge
                         span.icon.mif-2x.mif-gas-station
 
-                    button.button.success.m-1.border-radius-4
-                        span.caption Send Coins
+                    button.button.success.m-1.border-radius-4(onclick="sendCoins()")
+                        span.caption Send
                         span.icon.mif-2x.mif-move-up
 
-                    button.button.success.m-1.border-radius-4
-                        span.caption Receive Coins
+                    button.button.info.m-1.border-radius-4
+                        span.caption Receive
                         span.icon.mif-2x.mif-move-down
 
-                    button.button.warning.m-1.border-radius-4
-                        span.caption History
-                        span.icon.mif-2x.mif-history
+                    //button.button.dark.m-1.border-radius-4
+                    //    span.caption Move
+                    //    span.icon.mif-2x.mif-file-binary
+
+                    //button.button.warning.m-1.border-radius-4
+                    //    span.caption History
+                    //    span.icon.mif-2x.mif-history
+
+                    button.button.yellow.m-1.border-radius-4(onclick="showWalletInfo()")
+                        span.caption Info
+                        span.icon.mif-2x.mif-info
+
+                div.border-top.bd-system.mt-2
+                    h3.text-light.mt-4.text-muted Transactions history (last 25)
+                    div
+                        table.table.subcompact.striped
+                            thead
+                                tr
+                                    th(style="width: 30px") Type
+                                    th(style="width: 30px") Status
+                                    th Receiver
+                                    th(style="width: 100px") Amount
+                                    th(style="width: 100px") Gas
+                                    th(style="width: 100px") Total
+                                    th(style="width: 200px") Date
+                            tbody#transactions
+
 
 
         script.

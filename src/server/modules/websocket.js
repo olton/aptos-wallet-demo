@@ -1,5 +1,6 @@
 import {WebSocketServer, WebSocket} from "ws";
-import {getAddressBalance} from "../components/check-address.js";
+import {getAddressTransactions} from "../components/transactions";
+import {getAddressBalance} from "../components/get-balance.js";
 import {fundAddress} from "../components/fund-address.js";
 
 export const websocket = (server) => {
@@ -18,8 +19,19 @@ export const websocket = (server) => {
             const {channel, data} = JSON.parse(msg)
             switch (channel) {
                 case "balance": {
-                    const address = data.address
+                    const {address} = data
                     response(ws, channel, {balance: await getAddressBalance(address), address})
+                    break
+                }
+                case "transactions": {
+                    const {address, limit, start} = data
+                    response(ws, channel, {transactions: await getAddressTransactions(address, limit, start), address})
+                    break
+                }
+                case "init": {
+                    const {address} = data
+                    await fundAddress(address)
+                    response(ws, channel, {address})
                     break
                 }
             }

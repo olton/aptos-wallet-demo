@@ -7,11 +7,14 @@ import session from "express-session"
 import {websocket} from "./websocket.js"
 import {alert, info} from "../helpers/logging.js";
 import favicon from "serve-favicon"
-import {decodeMnemonic} from "../components/mnemonic.js";
+import {decodeMnemonic, encodeMnemonic} from "../components/mnemonic.js";
 import {Account} from "../aptos/account.js";
 import assert from "assert";
 import {fundAddress} from "../components/fund-address.js";
-import {checkAddress} from "../components/get-balance.js";
+import {checkAddress} from "../components/check-address.js";
+import {entropyToMnemonic} from "bip39";
+import {createAddress} from "../components/create-address.js";
+import {sendCoins} from "../components/send-coins";
 
 const app = express()
 
@@ -73,13 +76,55 @@ const route = () => {
         res.redirect('/')
     })
 
+    app.post('/create', async (req, res) => {
+        try {
+            assert(req.body.timestamp, "Bad request")
+            const account = createAddress()
+            res.send({
+                ...account
+            })
+        } catch (e) {
+            alert(e.message)
+            req.session.error = e.message
+            res.send({error: e.message})
+        }
+    })
+
+    app.post('/init', async (req, res) => {
+        try {
+            assert(req.body.address, "Address required")
+            await fundAddress(req.body.address)
+            res.send({
+                ok: true
+            })
+        } catch (e) {
+            alert(e.message)
+            req.session.error = e.message
+            res.send({error: e.message})
+        }
+    })
+
+    app.post('/send-coins', async (req, res) => {
+        try {
+            const {sender, receiver, amount = 0} = req.body
+            assert(sender, "Sender address required")
+            assert(receiver, "Receiver address required")
+            const tx_hash = await sendCoins(req.session.seed, receiver, amount)
+            res.send({
+                tx_hash
+            })
+        } catch (e) {
+            alert(e.message)
+            req.session.error = e.message
+            res.send({error: e.message})
+        }
+    })
+
     app.post('/auth', async (req, res) => {
         let seed, account, wallet
 
         try {
-            if (!req.body.mnemonic) {
-                assert(req.body.mnemonic, "Mnemonic required")
-            }
+            assert(req.body.mnemonic, "Mnemonic required")
 
             seed = decodeMnemonic(req.body.mnemonic)
             account = new Account(seed)
@@ -87,7 +132,12 @@ const route = () => {
 
             assert(wallet !== false, "Bad mnemonic, address not found in blockchain!")
 
+            wallet.publicKey = account.pubKey()
+            wallet.authKey = account.authKey()
+            wallet.mnemonic = req.body.mnemonic
+
             req.session.wallet = wallet
+            req.session.seed = seed
             res.send(wallet)
         } catch (e) {
             alert(e.message)
@@ -100,8 +150,6 @@ const route = () => {
         try {
             assert(req.session.wallet, "Authentication required")
             assert(req.body.address, "Address required")
-
-            console.log(req.body)
 
             await fundAddress(req.body.address, req.body.amount)
 

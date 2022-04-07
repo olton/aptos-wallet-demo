@@ -47,6 +47,7 @@ const wsMessageController = (ws, response) => {
     const requestBalance = (ws) => {
         if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
+            ws.send(JSON.stringify({channel: 'transactions', data: {address: wallet.address, limit: 1000, start: 0}}))
         }
 
         setTimeout(requestBalance, 10000, ws)
@@ -61,6 +62,10 @@ const wsMessageController = (ws, response) => {
             updateBalance(data)
             break
         }
+        case 'transactions': {
+            updateTransactions(data)
+            break
+        }
     }
 }
 
@@ -70,6 +75,13 @@ globalThis.refreshBalance = () => {
     const ws = globalThis.webSocket
     if (ws && isOpen(ws)) {
         ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
+    }
+}
+
+globalThis.initAddress = (address) => {
+    const ws = globalThis.webSocket
+    if (ws && isOpen(ws)) {
+        ws.send(JSON.stringify({channel: 'init', data: {address}}))
     }
 }
 

@@ -154,6 +154,21 @@ export class RestClient {
     }
 
     /**
+     * Get Address transactions
+     * @param accountAddress
+     * @param limit
+     * @param start
+     * @returns {Promise<any>}
+     */
+    async accountTransactions(accountAddress, limit = 25, start = 0){
+        const response = await fetch(`${this.url}/accounts/${accountAddress}/transactions?limit=${limit}&start=${start}`, {method: "GET"})
+        if (response.status !== 200) {
+            assert(response.status === 200, await response.text())
+        }
+        return await response.json()
+    }
+
+    /**
      * Transfer a given coin amount from a given Account to the recipient's account address.
      *    Returns the sequence number of the transaction used to transfer
      * @param accountFrom

@@ -10,3 +10,4 @@ coverage
 config*.json
 *config.json
 !config.example.json
+*.txt

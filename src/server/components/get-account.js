@@ -1,6 +1,6 @@
 import {RestClient} from "../aptos/rest-client.js";
 
-export const getAddressBalance = async (address) => {
+export const getAccount = async (address) => {
     const rest = new RestClient(config.api.rest)
 
     let account, balance
@@ -8,10 +8,14 @@ export const getAddressBalance = async (address) => {
     account = await rest.account(address)
 
     if (!account.authentication_key) {
-        return 0
+        return false
     }
 
     balance = await rest.accountBalance(address)
 
-    return balance
+    return {
+        address,
+        account,
+        balance
+    }
 }
