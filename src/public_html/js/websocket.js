@@ -47,23 +47,29 @@ const wsMessageController = (ws, response) => {
     const requestBalance = (ws) => {
         if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
+        }
+    }
+
+    const requestTransactions = (ws) => {
+        if (isOpen(ws)) {
             ws.send(JSON.stringify({channel: 'transactions', data: {address: wallet.address, limit: 1000, start: 0}}))
         }
-
-        setTimeout(requestBalance, 10000, ws)
     }
 
     switch(channel) {
         case 'welcome': {
             requestBalance(ws)
+            requestTransactions(ws)
             break
         }
         case 'balance': {
             updateBalance(data)
+            setTimeout(requestBalance, 10000, ws)
             break
         }
         case 'transactions': {
             updateTransactions(data)
+            setTimeout(requestTransactions, 10000, ws)
             break
         }
     }
