@@ -58,3 +58,17 @@ body {
     font-size: 48px;
     line-height: 1;
 }
+
+#title {
+    position: relative;
+}
+
+@media screen and (min-width: 800px)  {
+    #title {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 50%;
+        margin-left: -160px;
+    }
+}

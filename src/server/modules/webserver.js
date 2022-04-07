@@ -110,6 +110,7 @@ const route = () => {
             const {sender, receiver, amount = 0} = req.body
             assert(sender, "Sender address required")
             assert(receiver, "Receiver address required")
+            assert(receiver.length === 64, "Receiver address length not right")
             const tx_hash = await sendCoins(req.session.seed, receiver, amount)
             res.send({
                 tx_hash
