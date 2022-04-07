@@ -229,3 +229,71 @@ const showWalletInfo = () => {
 }
 
 globalThis.showWalletInfo = showWalletInfo
+
+const receiveCoins = async () => {
+    const url = '/qrcode'
+    const data = {
+        address: wallet.address
+    }
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const result = await response.json();
+        if (result.error) {
+            Metro.toast.create(result.error, null, 5000, "alert")
+        } else {
+            const dialogTitle = `
+                <div class="d-flex flex-row flex-nowrap flex-align-center">
+                    <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
+                    <div class="text-leader ml-2 reduce-2 mt-1">|</div>
+                    <div class="text-leader ml-1 mt-1">
+                        <span class="ml-1">RECEIVE</span>
+                        <span class="">COINS</span>
+                    </div>
+                </div>
+           `
+            const dialogContent = `
+                <div>To receive coins, provide the sender with the address or qr code:</div>
+                <ul class="unstyled-list w-100">
+                    <li>
+                        <div class="text-bold">QR Code:</div>
+                        <div class="text-small border bd-system p-2 text-center">
+                            <img src="${result.qrcode}">        
+                        </div>
+                    </li>
+                    <li>
+                        <div class="text-bold">Address:</div>
+                        <div class="text-small border bd-system p-2">
+                            ${wallet.address}        
+                        </div>
+                    </li>
+                </ul>
+            `
+
+            Metro.dialog.create({
+                title: dialogTitle,
+                content: dialogContent,
+                actionsAlign: "left",
+                actions: [
+                    {
+                        caption: "Close",
+                        cls: "js-dialog-close success",
+                        onclick: function(){
+                        }
+                    }
+                ]
+            });
+        }
+    } catch (error) {
+        Metro.toast.create(error.message, null, 5000, "alert")
+    } finally {
+    }
+}
+
+globalThis.receiveCoins = receiveCoins

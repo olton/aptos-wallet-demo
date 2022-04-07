@@ -15,6 +15,7 @@ import {checkAddress} from "../components/check-address.js";
 import {entropyToMnemonic} from "bip39";
 import {createAddress} from "../components/create-address.js";
 import {sendCoins} from "../components/send-coins";
+import {genQRCode} from "../components/gen-qrcode.js";
 
 const app = express()
 
@@ -154,6 +155,17 @@ const route = () => {
             await fundAddress(req.body.address, req.body.amount)
 
             res.send({ok: true})
+        } catch (e) {
+            alert(e.message)
+            res.send({error: e.message})
+        }
+    })
+
+    app.post('/qrcode', async(req, res) => {
+        try {
+            assert(req.body.address, "Address required")
+            const qrcode = await genQRCode(req.body.address)
+            res.send({qrcode})
         } catch (e) {
             alert(e.message)
             res.send({error: e.message})
