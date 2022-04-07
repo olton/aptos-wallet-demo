@@ -5,13 +5,14 @@ export const getAddressBalance = async (address) => {
 
     let account, balance
 
-    account = await rest.account(address)
-
-    if (!account.authentication_key) {
+    try {
+        account = await rest.account(address)
+        if (!account.authentication_key) {
+            return 0
+        }
+        balance = await rest.accountBalance(address)
+        return balance
+    } catch (e) {
         return 0
     }
-
-    balance = await rest.accountBalance(address)
-
-    return balance
 }
