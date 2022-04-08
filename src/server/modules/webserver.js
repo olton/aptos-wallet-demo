@@ -24,7 +24,7 @@ const route = () => {
     app.use(express.urlencoded({ extended: true }))
     app.use(session({
         resave: false,
-        saveUninitialized: true,
+        saveUninitialized: false,
         secret: 'Russian warship - Fuck You!',
         cookie: {
             maxAge: 24 * 3600000,
