@@ -77,17 +77,22 @@ export class RestClient {
     }
 
     async accountResourcesTyped(accountAddress = ""){
-        const response = await fetch(`${this.url}/accounts/${accountAddress}/resources`, {method: "GET"})
-        if (response.status !== 200) {
-            assert(response.status === 200, await response.text())
-        }
-        const resources = await response.json()
-        const result = []
+        try {
+            const response = await fetch(`${this.url}/accounts/${accountAddress}/resources`, {method: "GET"})
+            if (response.status !== 200) {
+                assert(response.status === 200, await response.text())
+            }
+            const resources = await response.json()
+            const result = []
 
-        for(let r of resources) {
-            result[r.type] = r.data
+            for (let r of resources) {
+                result[r.type] = r.data
+            }
+            return result
+        } catch (e) {
+            console.log(e.message)
+            return []
         }
-        return result
     }
 
     /**
