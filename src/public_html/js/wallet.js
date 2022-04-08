@@ -302,7 +302,7 @@ globalThis.updateLastSentCoins = data => {
                     </div>                
                     <div class="ml-auto">
                         <div class="d-flex flex-align-center flex-justify-center">
-                            <div style="line-height: 1">
+                            <div class="text-center" style="line-height: 1">
                                 <div class="amount">${n2f(amount)}</div>                             
                                 <div class="text-small text-muted">
                                     <span class="reduce-3 text-muted">${gas_currency_code}</span>
