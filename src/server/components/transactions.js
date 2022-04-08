@@ -61,6 +61,8 @@ export const getLastReceivedCoins = async (address, limit) => {
         const rest = new RestClient(config.api.rest)
         const resources = await rest.accountResourcesTyped(address)
 
+        console.log("R: ", resources[`0x1::${coin}::TransferEvents`]["received_events"])
+
         start = resources[`0x1::${coin}::TransferEvents`]["received_events"].counter - 25
         if (start < 0) start = 0
 
