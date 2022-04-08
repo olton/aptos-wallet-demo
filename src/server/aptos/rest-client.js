@@ -92,7 +92,6 @@ export class RestClient {
             return result
         } catch (e) {
             console.log("L:", link)
-            console.log("X:", e.message)
             return []
         }
     }
