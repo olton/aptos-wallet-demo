@@ -42,11 +42,16 @@ export class RestClient {
     }
 
     async accountEvents(accountAddress = "", event, field, limit = 25, start = 0){
-        const response = await fetch(`${this.url}/accounts/${accountAddress}/events/${event}/${field}?limit=${limit}&start=${start}`, {method: "GET"})
-        if (response.status !== 200) {
-            assert(response.status === 200, await response.text())
+        try {
+            const response = await fetch(`${this.url}/accounts/${accountAddress}/events/${event}/${field}?limit=${limit}&start=${start}`, {method: "GET"})
+            if (response.status !== 200) {
+                assert(response.status === 200, await response.text())
+            }
+            return await response.json()
+        } catch (e) {
+            console.log(e.message)
+            return null
         }
-        return await response.json()
     }
 
     async accountSentCoins(accountAddress = "", coin = "TestCoin", limit = 25, start = 0){
