@@ -46,7 +46,7 @@ export const getLastSentCoins = async (address, limit) => {
 
         return await rest.accountSentCoins(address, coin, limit, start)
     } catch (e) {
-        console.log(e.message)
+        console.log("Get sent coins error.", e.message)
         return []
     }
 }
@@ -66,7 +66,7 @@ export const getLastReceivedCoins = async (address, limit) => {
 
         return await rest.accountReceivedCoins(address, coin, limit, start)
     } catch (e) {
-        console.log(e.message)
+        console.log("Get received coins error.", e.message)
         return []
     }
 }
