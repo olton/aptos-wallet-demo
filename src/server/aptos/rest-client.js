@@ -77,8 +77,9 @@ export class RestClient {
     }
 
     async accountResourcesTyped(accountAddress = ""){
+        const link = `${this.url}/accounts/${accountAddress}/resources`
         try {
-            const response = await fetch(`${this.url}/accounts/${accountAddress}/resources`, {method: "GET"})
+            const response = await fetch(link, {method: "GET"})
             if (response.status !== 200) {
                 assert(response.status === 200, await response.text())
             }
@@ -90,6 +91,7 @@ export class RestClient {
             }
             return result
         } catch (e) {
+            console.log("L:", link)
             console.log("X:", e.message)
             return []
         }
