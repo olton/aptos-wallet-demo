@@ -83,7 +83,6 @@ const wsMessageController = (ws, response) => {
             break
         }
         case 'last-received-coins': {
-            console.log(data)
             updateLastReceivedCoins(data)
             setTimeout(requestReceivedCoins, 10000, ws)
             break
