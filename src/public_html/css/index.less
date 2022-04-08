@@ -63,6 +63,37 @@ body {
     position: relative;
 }
 
+.received-coins-list, .sent-coins-list {
+    width: 100%;
+    li {
+        padding: 20px;
+        border-radius: 10px;
+    }
+    & > li:nth-child(odd) {
+        background: var(--balance-info-background);
+    }
+    .row-icon{
+        margin-right: 20px;
+    }
+
+    .address-wrapper {
+
+    }
+    .amount {
+        font-size: 18px;
+    }
+    .total {
+        margin-left: 8px;
+        font-weight: bold;
+        color: var(--balance-info-accent-background);
+        font-size: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        min-width: 100px;
+    }
+}
+
 @media screen and (min-width: 800px)  {
     #title {
         position: fixed;

@@ -62,21 +62,19 @@ html(lang="en")
                         span.icon.mif-2x.mif-info
 
                 div.border-top.bd-system.mt-2
-                    h3.text-light.mt-4.text-muted Transactions history (last 25)
-                    div
-                        table.table.subcompact.striped
-                            thead
-                                tr
-                                    th(style="width: 30px") Type
-                                    th(style="width: 30px") Status
-                                    th Receiver
-                                    th(style="width: 100px") Amount
-                                    th(style="width: 100px") Gas
-                                    th(style="width: 100px") Total
-                                    th(style="width: 200px") Date
-                            tbody#transactions
+                    h3.text-light.mt-4.text-muted Transactions history
 
+                    ul(data-role="tabs" data-expand="true")
+                        li.ml-4
+                            a(href="#sent-coins") Sent
+                        li
+                            a(href="#received-coins") Received
 
+                    div#sent-coins
+                        ul.unstyled-list.sent-coins-list
+
+                    div#received-coins
+                        ul.unstyled-list.received-coins-list
 
         script.
             globalThis.config = !{clientConfig}

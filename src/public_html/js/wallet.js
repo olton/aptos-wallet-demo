@@ -1,6 +1,6 @@
 ;$(()=>{
     $("#address").attr("data-value", wallet.address).text("0x"+shorten(wallet.address, 12))
-    $("#address-balance").attr("data-value", wallet.balance).text(n2f(wallet.balance))
+    $("#address-balance").attr("data-value", wallet.balance).text(0)
 })
 
 globalThis.updateBalance = data => {
@@ -36,48 +36,7 @@ globalThis.chargeAccount = async button => {
     }
 }
 
-globalThis.updateTransactions = data => {
-    // console.log(data)
-    const target = $("#transactions").clear()
-    let index = 1
-    for(let t of data.transactions.reverse()) {
-        target.append(
-            $("<tr>").html(`
-                <td>
-                    <span class="${t.type === 'user_transaction' ? 'mif-user fg-cyan' : 'mif-cog'}"></span>
-                </td>
-                <td>
-                    <span class="${t.success ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'}"></span>
-                </td>
-                <td>
-                    <span>${shorten(t.payload.arguments[0], 12)}</span>
-                    <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${t.payload.arguments[0]}" title="Click to copy address to clipboard"></span>
-                    <div class="text-muted reduce-2">Hash: ${shorten(t.hash, 12)}</div>
-                </td>
-                <td>
-                    <span>${t.payload.arguments[1]}</span>
-                </td>
-                <td>
-                    <div>
-                        <span class="reduce-3 text-muted">${t.gas_currency_code}</span>
-                        <span>${t.gas_used}</span> 
-                        <span class="reduce-2 text-muted">x ${t.gas_unit_price}</span>
-                    </div>
-                </td>
-                <td>
-                    <span>${+(t.payload.arguments[1]) + (t.gas_used * t.gas_unit_price)}</span>
-                </td>
-                <td>
-                    <span>${datetime(+t.timestamp / 1000).format(dateFormat.log)}</span>
-                </td>
-            `)
-        )
-        index++
-        if (index > 25 ) break
-    }
-}
-
-const sendCoins = () => {
+globalThis.sendCoins = () => {
     const dialogTitle = `
         <div class="d-flex flex-row flex-nowrap flex-align-center">
             <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
@@ -172,9 +131,7 @@ const sendCoins = () => {
     });
 }
 
-globalThis.sendCoins = sendCoins
-
-const showWalletInfo = () => {
+globalThis.showWalletInfo = () => {
     const dialogTitle = `
         <div class="d-flex flex-row flex-nowrap flex-align-center">
             <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
@@ -229,9 +186,7 @@ const showWalletInfo = () => {
     });
 }
 
-globalThis.showWalletInfo = showWalletInfo
-
-const receiveCoins = async () => {
+globalThis.receiveCoins = async () => {
     const url = '/qrcode'
     const data = {
         address: wallet.address
@@ -297,4 +252,73 @@ const receiveCoins = async () => {
     }
 }
 
-globalThis.receiveCoins = receiveCoins
+
+globalThis.updateLastSentCoins = data => {
+}
+
+globalThis.updateLastReceivedCoins = data => {
+    const coins = data.coins.reverse()
+    const target = $(".received-coins-list").clear()
+
+    for(let c of coins) {
+        const {from, amount} = c.data
+        target.append(
+            $("<li>").html(`
+                <div class="d-flex flex-align-center">
+                    <div class="row-icon">
+                        <span class="mif-user mif-2x fg-orange"></span>                    
+                    </div>
+                    <div class="address-wrapper">
+                        <span class="address">${shorten(from, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${from}" title="Click to copy address to clipboard"></span>
+                    </div>                
+                    <div class="amount total ml-auto text-right">${n2f(amount)}</div>                
+                </div>
+            `)
+        )
+    }
+}
+
+globalThis.updateTransactions = data => {
+    // console.log(data)
+    const target = $(".sent-coins-list").clear()
+    let index = 1
+    for(let t of data.transactions.reverse()) {
+        const [address, amount] = t.payload.arguments
+        const {type, success, gas_currency_code, gas_used, gas_unit_price, timestamp, hash} = t
+        target.append(
+            $("<li>").html(`
+                <div class="d-flex flex-align-center">
+                    <div class="row-icon">
+                        <span class="mif-user mif-2x fg-cyan"></span>                    
+                    </div>
+                    <div class="row-icon">
+                        <span class="${success ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'} mif-2x"></span>                    
+                    </div>
+                    <div class="address-wrapper">
+                        <span class="address">${shorten(address, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${address}" title="Click to copy address to clipboard"></span>
+                        <div class="text-muted reduce-2">Hash: ${shorten(hash, 12)}</div>
+                    </div>                
+                    <div class="ml-auto">
+                        <div class="d-flex flex-align-center flex-justify-center">
+                            <div style="line-height: 1">
+                                <div class="amount">${n2f(amount)}</div>                             
+                                <div class="text-small text-muted">
+                                    <span class="reduce-3 text-muted">${gas_currency_code}</span>
+                                    <span>${gas_used}</span> 
+                                    <span class="reduce-2 text-muted">x ${gas_unit_price}</span>                                
+                                </div>                        
+                            </div>
+                            <div class="total">
+                                <span>${+(amount) + (gas_used * gas_unit_price)}</span>                            
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+            `)
+        )
+        index++
+        if (index > 25 ) break
+    }
+}

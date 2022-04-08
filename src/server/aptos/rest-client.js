@@ -25,6 +25,41 @@ export class RestClient {
     }
 
     /**
+     * Returns the coin balance associated with the account
+     * @param accountAddress
+     * @param coin
+     * @returns {Promise<null|number>}
+     */
+    async accountBalance(accountAddress, coin = 'TestCoin') {
+        const resources = await this.accountResources(accountAddress)
+        for (const key in resources) {
+            const resource = resources[key]
+            if (resource["type"] === `0x1::${coin}::Balance`) {
+                return parseInt(resource["data"]["coin"]["value"])
+            }
+        }
+        return null
+    }
+
+    //https://fullnode.devnet.aptoslabs.com/accounts/6a564403b90e83e0ecd9ec59446e4eed644a71fdd50441dacdf21fc03c265347/events/0x1::TestCoin::TransferEvents/received_events
+    async accountEvents(accountAddress = "", event, field, limit = 25, start = 0){
+        const response = await fetch(`${this.url}/accounts/${accountAddress}/events/${event}/${field}?limit=${limit}&start=${start}`, {method: "GET"})
+        if (response.status !== 200) {
+            assert(response.status === 200, await response.text())
+        }
+        return await response.json()
+    }
+
+    async accountSentCoins(accountAddress = "", coin = "TestCoin", limit = 25, start = 0){
+        return await this.accountEvents(accountAddress, `0x1::${coin}::TransferEvents`, 'sent_events', limit, start)
+    }
+
+    async accountReceivedCoins(accountAddress = "", coin = "TestCoin", limit = 25, start = 0){
+        return await this.accountEvents(accountAddress, `0x1::${coin}::TransferEvents`, 'received_events', limit, start)
+    }
+
+
+    /**
      * Returns all resources associated with the account
      * @param accountAddress
      * @returns {Promise<unknown>}
@@ -35,6 +70,20 @@ export class RestClient {
             assert(response.status === 200, await response.text())
         }
         return await response.json()
+    }
+
+    async accountResourcesTyped(accountAddress = ""){
+        const response = await fetch(`${this.url}/accounts/${accountAddress}/resources`, {method: "GET"})
+        if (response.status !== 200) {
+            assert(response.status === 200, await response.text())
+        }
+        const resources = await response.json()
+        const result = []
+
+        for(let r of resources) {
+            result[r.type] = r.data
+        }
+        return result
     }
 
     /**
@@ -134,23 +183,6 @@ export class RestClient {
                 throw new Error(`Waiting for transaction ${txnHash} timed out!`)
             }
         }
-    }
-
-    /**
-     * Returns the coin balance associated with the account
-     * @param accountAddress
-     * @param coin
-     * @returns {Promise<null|number>}
-     */
-    async accountBalance(accountAddress, coin = 'TestCoin') {
-        const resources = await this.accountResources(accountAddress)
-        for (const key in resources) {
-            const resource = resources[key]
-            if (resource["type"] === `0x1::${coin}::Balance`) {
-                return parseInt(resource["data"]["coin"]["value"])
-            }
-        }
-        return null
     }
 
     /**

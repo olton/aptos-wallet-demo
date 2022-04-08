@@ -51,6 +51,38 @@ body {
 #title {
   position: relative;
 }
+.received-coins-list,
+.sent-coins-list {
+  width: 100%;
+}
+.received-coins-list li,
+.sent-coins-list li {
+  padding: 20px;
+  border-radius: 10px;
+}
+.received-coins-list > li:nth-child(odd),
+.sent-coins-list > li:nth-child(odd) {
+  background: var(--balance-info-background);
+}
+.received-coins-list .row-icon,
+.sent-coins-list .row-icon {
+  margin-right: 20px;
+}
+.received-coins-list .amount,
+.sent-coins-list .amount {
+  font-size: 18px;
+}
+.received-coins-list .total,
+.sent-coins-list .total {
+  margin-left: 8px;
+  font-weight: bold;
+  color: var(--balance-info-accent-background);
+  font-size: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  min-width: 100px;
+}
 @media screen and (min-width: 800px) {
   #title {
     position: fixed;

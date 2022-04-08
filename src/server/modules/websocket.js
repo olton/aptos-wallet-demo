@@ -1,5 +1,5 @@
 import {WebSocketServer, WebSocket} from "ws";
-import {getAddressTransactions} from "../components/transactions";
+import {getAddressTransactions, getLastReceivedCoins, getLastSentCoins} from "../components/transactions";
 import {getAddressBalance} from "../components/get-balance.js";
 import {fundAddress} from "../components/fund-address.js";
 
@@ -26,6 +26,18 @@ export const websocket = (server) => {
                 case "transactions": {
                     const {address, limit, start} = data
                     response(ws, channel, {transactions: await getAddressTransactions(address, limit, start), address})
+                    break
+                }
+                case "last-sent-coins": {
+                    const {address, limit} = data
+                    const coins = await getLastSentCoins(address, limit)
+                    response(ws, channel, {address, coins})
+                    break
+                }
+                case "last-received-coins": {
+                    const {address, limit = 25} = data
+                    const coins = await getLastReceivedCoins(address, limit)
+                    response(ws, channel, {address, coins})
                     break
                 }
                 case "init": {

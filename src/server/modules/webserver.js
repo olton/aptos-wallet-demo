@@ -126,17 +126,21 @@ const route = () => {
     })
 
     app.post('/auth', async (req, res) => {
-        let seed, account, wallet
+        let seed, account, wallet = {}
 
         try {
             assert(req.body.mnemonic, "Mnemonic required")
 
             seed = decodeMnemonic(req.body.mnemonic)
+            assert(seed.length === 64, 'Invalid Mnemonic')
+
             account = new Account(seed)
-            wallet = await checkAddress(account.address())
+
+            // wallet = await checkAddress(account.address())
 
             assert(wallet !== false, "Bad mnemonic, address not found in blockchain!")
 
+            wallet.address = account.address()
             wallet.publicKey = account.pubKey()
             wallet.authKey = account.authKey()
             wallet.mnemonic = req.body.mnemonic
