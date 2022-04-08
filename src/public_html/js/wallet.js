@@ -311,7 +311,7 @@ globalThis.updateLastSentCoins = data => {
                                 </div>                        
                             </div>
                             <div class="total">
-                                <span>${+(amount) + (gas_used * gas_unit_price)}</span>                            
+                                <span>${n2f(+(amount) + (gas_used * gas_unit_price))}</span>                            
                             </div>
                         </div>
                     </div>                
