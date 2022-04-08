@@ -84,7 +84,7 @@ export class RestClient {
                 assert(response.status === 200, await response.text())
             }
             const resources = await response.json()
-            const result = []
+            const result = {}
 
             for (let r of resources) {
                 result[r.type] = r.data
