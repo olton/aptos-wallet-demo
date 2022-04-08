@@ -279,7 +279,7 @@ globalThis.updateLastReceivedCoins = data => {
     }
 }
 
-globalThis.updateTransactions = data => {
+globalThis.updateLastSentCoins = data => {
     // console.log(data)
     const target = $(".sent-coins-list").clear()
     let index = 1
