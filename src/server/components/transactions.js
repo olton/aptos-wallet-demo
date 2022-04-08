@@ -66,6 +66,7 @@ export const getLastReceivedCoins = async (address, limit) => {
 
         return await rest.accountReceivedCoins(address, coin, limit, start)
     } catch (e) {
+        console.log(e.message)
         return []
     }
 }

@@ -41,7 +41,6 @@ export class RestClient {
         return null
     }
 
-    //https://fullnode.devnet.aptoslabs.com/accounts/6a564403b90e83e0ecd9ec59446e4eed644a71fdd50441dacdf21fc03c265347/events/0x1::TestCoin::TransferEvents/received_events
     async accountEvents(accountAddress = "", event, field, limit = 25, start = 0){
         const response = await fetch(`${this.url}/accounts/${accountAddress}/events/${event}/${field}?limit=${limit}&start=${start}`, {method: "GET"})
         if (response.status !== 200) {
