@@ -1,7 +1,4 @@
 import {WebSocketServer, WebSocket} from "ws";
-import {getAddressTransactions, getLastReceivedCoins, getLastSentCoins} from "../components/transactions";
-import {getAddressBalance} from "../components/get-balance.js";
-import {fundAddress} from "../components/fund-address.js";
 
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
@@ -20,29 +17,29 @@ export const websocket = (server) => {
             switch (channel) {
                 case "balance": {
                     const {address} = data
-                    response(ws, channel, {balance: await getAddressBalance(address), address})
+                    response(ws, channel, {balance: await rest.getAccountBalance(address), address})
                     break
                 }
                 case "transactions": {
-                    const {address, limit, start} = data
-                    response(ws, channel, {transactions: await getAddressTransactions(address, limit, start), address})
+                    const {address, limit} = data
+                    response(ws, channel, {transactions: await rest.getAccountTransactionsLast(address, limit), address})
                     break
                 }
                 case "last-sent-coins": {
                     const {address, limit} = data
-                    const coins = await getLastSentCoins(address, limit)
+                    const coins = await rest.getAccountEventsSentCoinsLast(address, limit)
                     response(ws, channel, {address, coins})
                     break
                 }
                 case "last-received-coins": {
                     const {address, limit = 25} = data
-                    const coins = await getLastReceivedCoins(address, limit)
+                    const coins = await rest.getAccountEventsReceivedCoinsLast(address, limit)
                     response(ws, channel, {address, coins})
                     break
                 }
                 case "init": {
                     const {address} = data
-                    await fundAddress(address)
+                    await faucet.fundAddress(address)
                     response(ws, channel, {address})
                     break
                 }

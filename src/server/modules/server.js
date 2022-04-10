@@ -1,6 +1,7 @@
 import {info} from "../helpers/logging.js"
 import fs from "fs"
 import {runWebServer} from "./webserver.js"
+import {FaucetClient, RestClient} from "@olton/aptos";
 
 const readConfig = (path) => JSON.parse(fs.readFileSync(path, 'utf-8'))
 
@@ -22,6 +23,9 @@ export const run = (configPath) => {
                 return true
             }
         })
+
+        globalThis.rest = new RestClient(config.api.rest)
+        globalThis.faucet = new FaucetClient(config.api.faucet, rest)
 
         runProcesses()
         runWebServer()

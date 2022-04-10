@@ -57,6 +57,7 @@ body {
 }
 .received-coins-list li,
 .sent-coins-list li {
+  overflow-x: auto;
   padding: 20px;
   border-radius: 10px;
 }
@@ -82,6 +83,12 @@ body {
   align-items: center;
   justify-content: end;
   min-width: 100px;
+}
+.tabs li {
+  overflow: hidden;
+  font-size: 22px;
+  border-top-left-radius: var(--border-radius) !important;
+  border-top-right-radius: var(--border-radius) !important;
 }
 @media screen and (min-width: 800px) {
   #title {

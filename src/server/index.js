@@ -2,6 +2,7 @@ import pkg from "../../package.json"
 import path from "path"
 import { fileURLToPath } from 'url'
 import {run} from "./modules/server"
+import {RestClient} from "@olton/aptos";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

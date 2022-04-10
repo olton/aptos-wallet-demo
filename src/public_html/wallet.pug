@@ -9,7 +9,7 @@ html(lang="en")
 
         title Aptos Demo Wallet v0.1.0
     body.m4-cloak(style="padding-top: 52px")
-        section.bg-white.container-fluid.pos-fixed(style="top: 0; left: 0; right: 0;")
+        section.bg-white.container-fluid.pos-fixed(style="top: 0; left: 0; right: 0; z-index: 1000")
             header.container.bg-white.border-bottom.bd-system.pos-relative(data-role="app-bar" data-expand-point="fs")
                 a.brand.no-hover.d-flex.flex-align-center
                     div.app-bar-logo
@@ -66,15 +66,15 @@ html(lang="en")
 
                     ul(data-role="tabs" data-expand="true")
                         li.ml-4
-                            a(href="#sent-coins") Sent
+                            a(href="#sent-coins") Sent Coins
                         li
-                            a(href="#received-coins") Received
+                            a(href="#received-coins") Received Coins
 
-                    div#sent-coins
-                        ul.unstyled-list.sent-coins-list
+                    div#sent-coins.overflow-fs.no-overflow-md
+                        ul.unstyled-list.sent-coins-list.overflow
 
-                    div#received-coins
-                        ul.unstyled-list.received-coins-list
+                    div#received-coins.overflow-fs.no-overflow-md
+                        ul.unstyled-list.received-coins-list.overflow
 
         script.
             globalThis.config = !{clientConfig}

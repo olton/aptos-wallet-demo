@@ -1,5 +1,5 @@
 ;$(()=>{
-    $("#address").attr("data-value", wallet.address).text("0x"+shorten(wallet.address, 12))
+    $("#address").attr("data-value", wallet.address).text(shorten(wallet.address, 12))
     $("#address-balance").attr("data-value", wallet.balance).text(0)
 })
 
@@ -10,7 +10,7 @@ globalThis.updateBalance = data => {
 globalThis.chargeAccount = async button => {
     const url = '/charge'
     const data = {
-        address: wallet.address,
+        authKey: wallet.authKey,
         amount: 100
     }
     try {
@@ -146,25 +146,25 @@ globalThis.showWalletInfo = () => {
             <ul class="unstyled-list w-100">
                 <li>
                     <div class="text-bold">Mnemonic:</div>
-                    <div class="text-small border bd-system p-2">
+                    <div class="text-small border bd-system p-2 overflow-fs no-overflow-md">
                         ${wallet.mnemonic}        
                     </div>
                 </li>
                 <li class="mt-1">
                     <div class="text-bold">Address:</div>
-                    <div class="text-small border bd-system p-2">
+                    <div class="text-small border bd-system p-2 overflow-fs no-overflow-md">
                         ${wallet.address}        
                     </div>
                 </li>
                 <li class="mt-1">
                     <div class="text-bold">Public Key:</div>
-                    <div class="text-small border bd-system p-2">
+                    <div class="text-small border bd-system p-2 overflow-fs no-overflow-md">
                         ${wallet.publicKey}        
                     </div>
                 </li>
                 <li class="mt-1">
                     <div class="text-bold">Auth Key:</div>
-                    <div class="text-small border bd-system p-2">
+                    <div class="text-small border bd-system p-2 overflow-fs no-overflow-md">
                         ${wallet.authKey}        
                     </div>
                 </li>
@@ -268,11 +268,20 @@ globalThis.updateLastReceivedCoins = data => {
                     <div class="row-icon">
                         <span class="mif-user mif-2x fg-orange"></span>                    
                     </div>
-                    <div class="address-wrapper">
+                    <div class="row-icon">
+                        <span class="mif-checkmark fg-green mif-2x"></span>                    
+                    </div>
+                    <div class="address-wrapper d-none-fs d-block-md">
                         <span class="address">${shorten(from, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${from}" title="Click to copy address to clipboard"></span>
                     </div>                
                     <div class="amount total ml-auto text-right">${n2f(amount)}</div>                
+                </div>
+                <div class="d-block d-none-md border-top bd-system pt-2">
+                    <div class="address-wrapper text-center">
+                        <span class="address">${shorten(from, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${from}" title="Click to copy address to clipboard"></span>
+                    </div>                
                 </div>
             `)
         )
@@ -295,10 +304,10 @@ globalThis.updateLastSentCoins = data => {
                     <div class="row-icon">
                         <span class="${success ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'} mif-2x"></span>                    
                     </div>
-                    <div class="address-wrapper">
+                    <div class="address-wrapper d-none-fs d-block-md">
                         <span class="address">${shorten(address, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${address}" title="Click to copy address to clipboard"></span>
-                        <div class="text-muted reduce-2">Hash: ${shorten(hash, 12)}</div>
+<!--                        <div class="text-muted reduce-2">Hash: ${shorten(hash, 12)}</div>-->
                     </div>                
                     <div class="ml-auto">
                         <div class="d-flex flex-align-center flex-justify-center">
@@ -310,10 +319,16 @@ globalThis.updateLastSentCoins = data => {
                                     <span class="reduce-2 text-muted">x ${gas_unit_price}</span>                                
                                 </div>                        
                             </div>
-                            <div class="total">
+                            <div class="total mt-1-minus">
                                 <span>${n2f(+(amount) + (gas_used * gas_unit_price))}</span>                            
                             </div>
                         </div>
+                    </div>                
+                </div>
+                <div class="d-block d-none-md border-top bd-system pt-2">
+                    <div class="address-wrapper text-center">
+                        <span class="address">${shorten(address, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${address}" title="Click to copy address to clipboard"></span>
                     </div>                
                 </div>
             `)

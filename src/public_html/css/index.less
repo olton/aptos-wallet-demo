@@ -65,9 +65,15 @@ body {
 
 .received-coins-list, .sent-coins-list {
     width: 100%;
+
     li {
+        overflow-x: auto;
         padding: 20px;
         border-radius: 10px;
+
+        //& > div {
+        //    min-width: 520px;
+        //}
     }
     & > li:nth-child(odd) {
         background: var(--balance-info-background);
@@ -91,6 +97,15 @@ body {
         align-items: center;
         justify-content: end;
         min-width: 100px;
+    }
+}
+
+.tabs {
+    li {
+        overflow: hidden;
+        font-size: 22px;
+        border-top-left-radius: var(--border-radius)!important;
+        border-top-right-radius: var(--border-radius) !important;
     }
 }
 
