@@ -247,7 +247,7 @@ export class RestClient {
             "type_arguments": [],
             "arguments": [
                 "0x" + accountNew.address(),
-                "0x" + accountNew.authKey(), // ???
+                "0x" + accountNew.pubKey(), // ???
             ]
         }
         const txnRequest = await this.generateTransaction(accountFrom.address(), payload)
