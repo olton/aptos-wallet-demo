@@ -17,23 +17,45 @@ export const websocket = (server) => {
             switch (channel) {
                 case "balance": {
                     const {address} = data
-                    response(ws, channel, {balance: await rest.getAccountBalance(address), address})
+                    let balance
+                    try {
+                        balance = await rest.getAccountBalance(address)
+                    } catch (e) {
+                        balance = 0
+                    }
+                    response(ws, channel, {balance, address})
                     break
                 }
                 case "transactions": {
                     const {address, limit} = data
-                    response(ws, channel, {transactions: await rest.getAccountTransactionsLast(address, limit), address})
+                    let transactions
+                    try {
+                        transactions = await rest.getAccountTransactionsLast(address, limit)
+                    } catch (e) {
+                        transactions = []
+                    }
+                    response(ws, channel, {transactions, address})
                     break
                 }
                 case "last-sent-coins": {
                     const {address, limit} = data
-                    const coins = await rest.getAccountEventsSentCoinsLast(address, limit)
+                    let coins
+                    try {
+                        coins = await rest.getAccountEventsSentCoinsLast(address, limit)
+                    } catch (e) {
+                        coins = []
+                    }
                     response(ws, channel, {address, coins})
                     break
                 }
                 case "last-received-coins": {
                     const {address, limit = 25} = data
-                    const coins = await rest.getAccountEventsReceivedCoinsLast(address, limit)
+                    let coins
+                    try {
+                        coins = await rest.getAccountEventsReceivedCoinsLast(address, limit)
+                    } catch (e) {
+                        coins = []
+                    }
                     response(ws, channel, {address, coins})
                     break
                 }
