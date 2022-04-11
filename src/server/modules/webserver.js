@@ -170,6 +170,16 @@ const route = () => {
             res.send({error: e.message})
         }
     })
+
+    app.post('/ping', async(req, res) => {
+        try {
+            assert(req.session.wallet, "Authentication required")
+            res.send({wallet: req.session.wallet})
+        } catch (e) {
+            alert(e.message)
+            res.send({error: e.message})
+        }
+    })
 }
 
 export const runWebServer = () => {
