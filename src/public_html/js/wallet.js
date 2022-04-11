@@ -3,6 +3,39 @@
     $("#address-balance").attr("data-value", wallet.balance).text(0)
 })
 
+const checkWallet = async () => {
+    const url = '/ping'
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                address: wallet.address
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const result = await response.json()
+
+        if (!result.error) {
+            globalThis.wallet = result.wallet
+        }
+
+        if (!wallet || !wallet.address) {
+            Metro.toast.create(parseJson(result.error).message, null, 5000, "alert")
+            setTimeout( () => {
+                window.location.href = '/login'
+            }, 3000)
+        }
+
+    } catch (e) {
+        Metro.toast.create(e.message, null, 5000, "alert")
+    } finally {
+        setTimeout(checkWallet, 60000)
+    }
+}
+
 globalThis.updateBalance = data => {
     $("#address-balance").attr("data-value", data.balance).text(n2f(data.balance))
 }
@@ -336,4 +369,89 @@ globalThis.updateLastSentCoins = data => {
         index++
         if (index > 25 ) break
     }
+}
+
+globalThis.sendMessage = () => {
+    const dialogTitle = `
+        <div class="d-flex flex-row flex-nowrap flex-align-center">
+            <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
+            <div class="text-leader ml-2 reduce-2 mt-1">|</div>
+            <div class="text-leader ml-1 mt-1">
+                <span class="ml-1">SEND</span>
+                <span class="">MESSAGE</span>
+            </div>
+        </div>
+        `
+    const dialogContent = `
+            <form action="javascript:" onsubmit="return false" id="sendMessageForm">
+                <ul class="unstyled-list w-100">
+                    <li class="mt-1">
+                        <div class="text-bold">To Address:</div>
+                        <div>
+                            <input type="text" data-role="input" name="receiver">        
+                        </div>
+                    </li>
+                    <li class="mt-1">
+                        <div class="text-bold">Message:</div>
+                        <textarea data-role="textarea" name="text"></textarea>
+                    </li>
+                </ul>
+            </form>
+        `
+
+    const dlg = Metro.dialog.create({
+        title: dialogTitle,
+        content: dialogContent,
+        actionsAlign: "left",
+        actions: [
+            {
+                caption: "Send Message",
+                cls: "success",
+                onclick: async () => {
+                    const form = $("#sendMessageForm")[0]
+                    const sender = wallet.address
+                    const receiver = form.elements.receiver.value.trim()
+                    const text = form.elements.text.value.trim()
+
+                    await checkWallet()
+
+                    if (!receiver) {
+                        Metro.toast.create(`You must specify a receiver address!`, null, 5000, "alert")
+                        return
+                    }
+                    try {
+                        const response = await fetch('/send-message', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                sender,
+                                receiver,
+                                text
+                            }),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        })
+
+                        const result = await response.json()
+
+                        if (result.error) {
+                            Metro.toast.create(result.error, null, 5000, "alert")
+                        } else {
+                            Metro.toast.create(`Message sent successful. Transaction created with hash ${result.tx_hash}`, null, 5000, "success")
+                        }
+
+                        Metro.dialog.close(dlg)
+                    } catch (e) {
+                        Metro.toast.create(e.message, null, 5000, "alert")
+                    }
+                }
+            },
+            {
+                caption: "Cancel",
+                cls: "js-dialog-close",
+                onclick: function(){
+                }
+            }
+        ]
+    });
 }
