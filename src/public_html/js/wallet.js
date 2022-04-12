@@ -287,7 +287,6 @@ globalThis.receiveCoins = async () => {
 
 
 globalThis.updateLastSentCoins = data => {
-    console.log(data.coins)
     const coins = data.coins.reverse()
     const target = $(".sent-coins-list").clear()
 
