@@ -1,7 +1,7 @@
 const login = async (form) => {
     const url = '/auth'
     const data = {
-        mnemonic: form.elements.mnemonic.value
+        mnemonic: form.elements.mnemonic.value.trim()
     }
     const button = $(form).find("button")
     try {

@@ -287,6 +287,36 @@ globalThis.receiveCoins = async () => {
 
 
 globalThis.updateLastSentCoins = data => {
+    console.log(data.coins)
+    const coins = data.coins.reverse()
+    const target = $(".sent-coins-list").clear()
+
+    for(let c of coins) {
+        const {to, amount} = c.data
+        target.append(
+            $("<li>").html(`
+                <div class="d-flex flex-align-center">
+                    <div class="row-icon">
+                        <span class="mif-user mif-2x fg-orange"></span>
+                    </div>
+                    <div class="row-icon">
+                        <span class="mif-checkmark fg-green mif-2x"></span>
+                    </div>
+                    <div class="address-wrapper d-none-fs d-block-md">
+                        <span class="address">${shorten(to, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${to}" title="Click to copy address to clipboard"></span>
+                    </div>
+                    <div class="amount total ml-auto text-right">${n2f(amount)}</div>
+                </div>
+                <div class="d-block d-none-md border-top bd-system pt-2">
+                    <div class="address-wrapper text-center">
+                        <span class="address">${shorten(to, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${to}" title="Click to copy address to clipboard"></span>
+                    </div>
+                </div>
+            `)
+        )
+    }
 }
 
 globalThis.updateLastReceivedCoins = data => {
@@ -321,7 +351,7 @@ globalThis.updateLastReceivedCoins = data => {
     }
 }
 
-globalThis.updateLastSentCoins = data => {
+globalThis.updateLastTransactions = data => {
     // console.log(data)
     const target = $(".sent-coins-list").clear()
     let index = 1

@@ -52,8 +52,8 @@ const wsMessageController = (ws, response) => {
 
     const requestSentCoins = (ws) => {
         if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'transactions', data: {address: wallet.address, limit: 1000, start: 0}}))
-            // ws.send(JSON.stringify({channel: 'last-sent-coins', data: {address: wallet.address, limit: 25}}))
+            // ws.send(JSON.stringify({channel: 'transactions', data: {address: wallet.address, limit: 1000, start: 0}}))
+            ws.send(JSON.stringify({channel: 'last-sent-coins', data: {address: wallet.address, limit: 25}}))
         }
     }
 
@@ -84,6 +84,11 @@ const wsMessageController = (ws, response) => {
         }
         case 'last-received-coins': {
             updateLastReceivedCoins(data)
+            setTimeout(requestReceivedCoins, 10000, ws)
+            break
+        }
+        case 'last-sent-coins': {
+            updateLastSentCoins(data)
             setTimeout(requestReceivedCoins, 10000, ws)
             break
         }

@@ -38,7 +38,7 @@ export const websocket = (server) => {
                     break
                 }
                 case "last-sent-coins": {
-                    const {address, limit} = data
+                    const {address, limit = 25} = data
                     let coins
                     try {
                         coins = await rest.getAccountEventsSentCoinsLast(address, limit)
