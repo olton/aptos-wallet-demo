@@ -10,6 +10,7 @@ import favicon from "serve-favicon"
 import assert from "assert";
 import {genQRCode} from "../helpers/gen-qrcode.js";
 import {Account} from "@olton/aptos";
+import {parseJson} from "../helpers/parse-json.js";
 
 const app = express()
 
@@ -111,14 +112,21 @@ const route = () => {
             assert(sender, "Sender address required")
             assert(receiver, "Receiver address required")
             assert(receiver.length === 64, "Receiver address length not right")
-            const tx_hash = await rest.sendCoins(new Account(req.session.seed), receiver, amount)
-            res.send({
-                tx_hash
-            })
+            const result = await rest.sendCoins(new Account(req.session.seed), receiver, amount)
+            if (result) {
+                res.send({
+                    tx_hash: rest.getLastTransaction().hash
+                })
+            } else {
+                res.send({
+                    error: rest.getLastTransaction().vm_status
+                })
+            }
         } catch (e) {
-            alert(e.message)
-            req.session.error = e.message
-            res.send({error: e.message})
+            const error = parseJson(e.message)
+            const message = error.message ? error.message : JSON.stringify(error)
+            req.session.error = message
+            res.send({error: message})
         }
     })
 

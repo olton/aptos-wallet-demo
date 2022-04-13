@@ -1,5 +1,6 @@
 Metro.toastSetup({
     showTop: true,
-    clsToast: "wallet-toast"
+    clsToast: "wallet-toast",
+    timeout: 10000
 })
 
