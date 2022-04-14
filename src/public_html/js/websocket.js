@@ -89,7 +89,7 @@ const wsMessageController = (ws, response) => {
         }
         case 'last-sent-coins': {
             updateLastSentCoins(data)
-            setTimeout(requestReceivedCoins, 10000, ws)
+            setTimeout(requestSentCoins, 10000, ws)
             break
         }
     }
