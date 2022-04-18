@@ -32,8 +32,6 @@ const login = async (form) => {
     }
 }
 
-globalThis.login = login
-
 const createWallet = async (button) => {
     const url = '/create'
     const data = {
@@ -93,6 +91,12 @@ const createWallet = async (button) => {
                         ${result.authKey}        
                     </div>
                 </li>
+                <li class="mt-1">
+                    <div class="text-bold">Private Key:</div>
+                    <div class="text-small border bd-system p-2">
+                        ${result.privateKey}        
+                    </div>
+                </li>
             </ul>
         `
 
@@ -116,6 +120,20 @@ const createWallet = async (button) => {
                     }
                 },
                 {
+                    caption: "Save to file...",
+                    cls: "info",
+                    onclick: function(){
+                        const a = [
+                            `Address: ${result.address}`,
+                            `PublicKey: ${result.publicKey}`,
+                            `AuthKey: ${result.authKey}`,
+                            `PrivateKey: ${result.privateKey}`,
+                            `Mnemonic: ${result.mnemonic}`
+                        ]
+                        saveToFile("address.txt", a.join("\n").trim())
+                    }
+                },
+                {
                     caption: "Cancel",
                     cls: "js-dialog-close",
                     onclick: function(){
@@ -130,8 +148,6 @@ const createWallet = async (button) => {
         button.disabled = false
     }
 }
-
-globalThis.createWallet = createWallet
 
 ;$(()=>{
     if (parseJson(globalThis.walletError)) {

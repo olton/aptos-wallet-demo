@@ -80,7 +80,8 @@ const route = () => {
                 address: account.address(),
                 publicKey: account.pubKey(),
                 authKey: account.authKey(),
-                mnemonic: account.mnemonic()
+                mnemonic: account.mnemonic(),
+                privateKey: account.privateKey()
             })
         } catch (e) {
             alert(e.message)
@@ -143,6 +144,7 @@ const route = () => {
             wallet.publicKey = account.pubKey()
             wallet.authKey = account.authKey()
             wallet.mnemonic = account.mnemonic()
+            wallet.privateKey = account.privateKey()
 
             req.session.wallet = wallet
             req.session.seed = account.privateKey()

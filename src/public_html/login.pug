@@ -21,7 +21,7 @@ html(lang="en")
 
             form(action="javascript:" onsubmit="login(this)")
                 div.mt-2.mb-4
-                    textarea.w-100.h-100(data-role="textarea" name="mnemonic" placeholder="Enter address Mnemonic")
+                    textarea.w-100.h-100(data-role="textarea" name="mnemonic" placeholder="Enter 24 words address Mnemonic")
 
                 div.remark.warning.pt-1.pb-1
                     | A mnemonic is a set of words in which an address is encoded.
@@ -46,6 +46,7 @@ html(lang="en")
             globalThis.walletError = `!{walletError}`
 
         script(src="vendor/metro4/js/metro.min.js")
-        script(type="module", src="js/metro.conf.js")
-        script(type="module", src="js/utils.js")
-        script(type="module", src="js/login.js")
+        script(src="js/metro.conf.js")
+        script(src="js/utils.js")
+        script(src="js/login.js")
+        script(src="js/save.js")

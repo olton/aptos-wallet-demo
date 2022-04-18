@@ -36,11 +36,11 @@ const checkWallet = async () => {
     }
 }
 
-globalThis.updateBalance = data => {
+updateBalance = data => {
     $("#address-balance").attr("data-value", data.balance).text(n2f(data.balance))
 }
 
-globalThis.chargeAccount = async button => {
+chargeAccount = async button => {
     const url = '/charge'
     const data = {
         authKey: wallet.authKey,
@@ -69,7 +69,7 @@ globalThis.chargeAccount = async button => {
     }
 }
 
-globalThis.sendCoins = () => {
+sendCoins = () => {
     const dialogTitle = `
         <div class="d-flex flex-row flex-nowrap flex-align-center">
             <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
@@ -164,7 +164,7 @@ globalThis.sendCoins = () => {
     });
 }
 
-globalThis.showWalletInfo = () => {
+showWalletInfo = () => {
     const dialogTitle = `
         <div class="d-flex flex-row flex-nowrap flex-align-center">
             <div class="aptos-logo"><img src="images/aptos_word.svg"></div>
@@ -201,6 +201,12 @@ globalThis.showWalletInfo = () => {
                         ${wallet.authKey}        
                     </div>
                 </li>
+                <li class="mt-1">
+                    <div class="text-bold">Private Key:</div>
+                    <div class="text-small border bd-system p-2 overflow-fs no-overflow-md">
+                        ${wallet.privateKey}        
+                    </div>
+                </li>
             </ul>
         `
 
@@ -214,12 +220,26 @@ globalThis.showWalletInfo = () => {
                 cls: "js-dialog-close success",
                 onclick: function(){
                 }
+            },
+            {
+                caption: "Save to file...",
+                cls: "info",
+                onclick: function(){
+                    const a = [
+                        `Address: ${wallet.address}`,
+                        `PublicKey: ${wallet.publicKey}`,
+                        `AuthKey: ${wallet.authKey}`,
+                        `PrivateKey: ${wallet.privateKey}`,
+                        `Mnemonic: ${wallet.mnemonic}`
+                    ]
+                    saveToFile("address.txt", a.join("\n").trim())
+                }
             }
         ]
     });
 }
 
-globalThis.receiveCoins = async () => {
+receiveCoins = async () => {
     const url = '/qrcode'
     const data = {
         address: wallet.address
@@ -286,7 +306,7 @@ globalThis.receiveCoins = async () => {
 }
 
 
-globalThis.updateLastSentCoins = data => {
+updateLastSentCoins = data => {
     const coins = data.coins.reverse()
     const target = $(".sent-coins-list").clear()
 
@@ -318,7 +338,7 @@ globalThis.updateLastSentCoins = data => {
     }
 }
 
-globalThis.updateLastReceivedCoins = data => {
+updateLastReceivedCoins = data => {
     const coins = data.coins.reverse()
     const target = $(".received-coins-list").clear()
 
@@ -350,7 +370,7 @@ globalThis.updateLastReceivedCoins = data => {
     }
 }
 
-globalThis.updateLastTransactions = data => {
+updateLastTransactions = data => {
     // console.log(data)
     const target = $(".sent-coins-list").clear()
     let index = 1

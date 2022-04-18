@@ -1,5 +1,5 @@
 
-globalThis.webSocket = null
+webSocket = null
 
 const isOpen = (ws) => ws && ws.readyState === ws.OPEN
 
@@ -97,14 +97,14 @@ const wsMessageController = (ws, response) => {
 
 connect()
 
-globalThis.refreshBalance = () => {
+refreshBalance = () => {
     const ws = globalThis.webSocket
     if (ws && isOpen(ws)) {
         ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
     }
 }
 
-globalThis.initAddress = (address) => {
+initAddress = (address) => {
     const ws = globalThis.webSocket
     if (ws && isOpen(ws)) {
         ws.send(JSON.stringify({channel: 'init', data: {address}}))
