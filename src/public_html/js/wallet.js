@@ -324,6 +324,7 @@ updateLastSentCoins = data => {
                     <div class="address-wrapper d-none-fs d-block-md">
                         <span class="address">${shorten(target, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${target}" title="Click to copy address to clipboard"></span>
+                        <div class="text-small">${datetime(inserted_at).format(dateFormat.log)}</div>
                     </div>
                     <div class="amount total ml-auto text-right">
                         <div class="reduce-4">${n2f(amount)}</div>
@@ -335,6 +336,7 @@ updateLastSentCoins = data => {
                     <div class="address-wrapper text-center">
                         <span class="address">${shorten(target, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${target}" title="Click to copy address to clipboard"></span>
+                        <div class="text-small">${datetime(inserted_at).format(dateFormat.log)}</div>
                     </div>
                 </div>
             `)
@@ -360,6 +362,7 @@ updateLastReceivedCoins = data => {
                     <div class="address-wrapper d-none-fs d-block-md">
                         <span class="address">${shorten(sender, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${sender}" title="Click to copy address to clipboard"></span>
+                        <div class="text-small">${datetime(inserted_at).format(dateFormat.log)}</div>
                     </div>
                     <div class="amount total ml-auto text-right">
                         <div class="reduce-4">${n2f(amount)}</div>
@@ -369,6 +372,7 @@ updateLastReceivedCoins = data => {
                     <div class="address-wrapper text-center">
                         <span class="address">${shorten(sender, 12)}</span>
                         <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${sender}" title="Click to copy address to clipboard"></span>
+                        <div class="text-small">${datetime(inserted_at).format(dateFormat.log)}</div>
                     </div>
                 </div>
             `)
