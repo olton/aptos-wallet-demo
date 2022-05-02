@@ -307,7 +307,7 @@ receiveCoins = async () => {
 
 
 updateLastSentCoins = data => {
-    const coins = data.coins.reverse()
+    const coins = data.coins
     const list = $(".sent-coins-list").clear()
 
     for(let c of coins) {
@@ -345,7 +345,7 @@ updateLastSentCoins = data => {
 }
 
 updateLastReceivedCoins = data => {
-    const coins = data.coins.reverse()
+    const coins = data.coins
     const list = $(".received-coins-list").clear()
 
     for(let c of coins) {

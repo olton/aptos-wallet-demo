@@ -23,6 +23,10 @@ export const run = () => {
         globalThis.aptos = new Aptos(config.api.rest)
         globalThis.faucet = new FaucetClient(config.api.faucet, aptos)
 
+        aptos.setGasValue({
+            max_gas_amount: 100
+        })
+
         createDBConnection()
         runProcesses()
         runWebServer()
