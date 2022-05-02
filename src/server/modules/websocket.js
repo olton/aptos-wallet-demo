@@ -1,4 +1,5 @@
 import {WebSocketServer, WebSocket} from "ws";
+import {getReceivedEvents, getSentEvents} from "./indexer.js";
 
 export const websocket = (server) => {
     globalThis.wss = new WebSocketServer({ server })
@@ -19,7 +20,7 @@ export const websocket = (server) => {
                     const {address} = data
                     let balance
                     try {
-                        balance = await rest.getAccountBalance(address)
+                        balance = await aptos.getAccountBalance(address)
                     } catch (e) {
                         balance = 0
                     }
@@ -30,29 +31,29 @@ export const websocket = (server) => {
                     const {address, limit} = data
                     let transactions
                     try {
-                        transactions = await rest.getAccountTransactionsLast(address, limit)
+                        transactions = await aptos.getAccountTransactionsLast(address, limit)
                     } catch (e) {
                         transactions = []
                     }
                     response(ws, channel, {transactions, address})
                     break
                 }
-                case "last-sent-coins": {
+                case "sent-coins": {
                     const {address, limit = 25} = data
                     let coins
                     try {
-                        coins = await rest.getAccountEventsSentCoinsLast(address, limit)
+                        coins = await getSentEvents(address, {limit})
                     } catch (e) {
                         coins = []
                     }
                     response(ws, channel, {address, coins})
                     break
                 }
-                case "last-received-coins": {
+                case "received-coins": {
                     const {address, limit = 25} = data
                     let coins
                     try {
-                        coins = await rest.getAccountEventsReceivedCoinsLast(address, limit)
+                        coins = await getReceivedEvents(address, {limit})
                     } catch (e) {
                         coins = []
                     }

@@ -1,20 +1,16 @@
 import {info} from "../helpers/logging.js"
-import fs from "fs"
 import {runWebServer} from "./webserver.js"
-import {FaucetClient, RestClient} from "@olton/aptos";
-
-const readConfig = (path) => JSON.parse(fs.readFileSync(path, 'utf-8'))
+import {FaucetClient, Aptos} from "@olton/aptos";
+import {createDBConnection} from "./postgres.js";
 
 const runProcesses = () => {
     setImmediate( () => {} )
 }
 
-export const run = (configPath) => {
+export const run = () => {
     info("Starting Aptos Wallet Server...")
 
     try {
-
-        globalThis.config = readConfig(configPath)
         globalThis.ssl = config.server.ssl && (config.server.ssl.cert && config.server.ssl.key)
         globalThis.cache = new Proxy({
         }, {
@@ -24,9 +20,10 @@ export const run = (configPath) => {
             }
         })
 
-        globalThis.rest = new RestClient(config.api.rest)
-        globalThis.faucet = new FaucetClient(config.api.faucet, rest)
+        globalThis.aptos = new Aptos(config.api.rest)
+        globalThis.faucet = new FaucetClient(config.api.faucet, aptos)
 
+        createDBConnection()
         runProcesses()
         runWebServer()
 

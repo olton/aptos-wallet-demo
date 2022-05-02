@@ -6,23 +6,24 @@
     "main": "src/server/index.js",
     "type": "module",
     "scripts": {
-        "start": "node --es-module-specifier-resolution=node .",
-        "dev": "nodemon --es-module-specifier-resolution=node ."
+        "start": "node .",
+        "dev": "nodemon ."
     },
     "devDependencies": {
         "shx": "^0.3.4"
     },
     "dependencies": {
-        "@olton/aptos": "^0.1.12",
+        "@olton/aptos": "^0.1.39",
         "@olton/datetime": "^2.0.8",
         "assert": "^2.0.0",
         "cross-fetch": "^3.1.5",
-        "express": "^4.17.3",
+        "express": "^4.18.1",
         "express-session": "^1.17.2",
+        "pg": "^8.7.3",
         "pug": "^3.0.2",
         "qrcode": "^1.5.0",
         "serve-favicon": "^2.5.0",
-        "ws": "^8.5.0"
+        "ws": "^8.6.0"
     },
     "staticFiles": {},
     "browserslist": [

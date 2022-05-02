@@ -44,27 +44,6 @@ const wsMessageController = (ws, response) => {
         return
     }
 
-    const requestBalance = (ws) => {
-        if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
-        }
-    }
-
-    const requestSentCoins = (ws) => {
-        if (isOpen(ws)) {
-            // ws.send(JSON.stringify({channel: 'transactions', data: {address: wallet.address, limit: 1000, start: 0}}))
-            ws.send(JSON.stringify({channel: 'last-sent-coins', data: {address: wallet.address, limit: 25}}))
-        }
-    }
-
-    const requestReceivedCoins = (ws) => {
-        if (isOpen(ws)) {
-            ws.send(JSON.stringify({channel: 'last-received-coins', data: {address: wallet.address, limit: 25}}))
-        }
-    }
-
-
-
     switch(channel) {
         case 'welcome': {
             requestBalance(ws)
@@ -77,17 +56,12 @@ const wsMessageController = (ws, response) => {
             setTimeout(requestBalance, 10000, ws)
             break
         }
-        case 'transactions': {
-            updateLastSentCoins(data)
-            setTimeout(requestSentCoins, 10000, ws)
-            break
-        }
-        case 'last-received-coins': {
+        case 'received-coins': {
             updateLastReceivedCoins(data)
             setTimeout(requestReceivedCoins, 10000, ws)
             break
         }
-        case 'last-sent-coins': {
+        case 'sent-coins': {
             updateLastSentCoins(data)
             setTimeout(requestSentCoins, 10000, ws)
             break
@@ -97,17 +71,33 @@ const wsMessageController = (ws, response) => {
 
 connect()
 
-refreshBalance = () => {
-    const ws = globalThis.webSocket
-    if (ws && isOpen(ws)) {
+const requestBalance = (ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
         ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
     }
 }
 
-initAddress = (address) => {
-    const ws = globalThis.webSocket
-    if (ws && isOpen(ws)) {
-        ws.send(JSON.stringify({channel: 'init', data: {address}}))
+const requestSentCoins = (ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
+        ws.send(JSON.stringify({channel: 'sent-coins', data: {address: wallet.address, limit: 25}}))
+    }
+}
+
+const requestReceivedCoins = (ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
+        ws.send(JSON.stringify({channel: 'received-coins', data: {address: wallet.address, limit: 25}}))
+    }
+}
+
+const refreshBalance = (ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
+        ws.send(JSON.stringify({channel: 'balance', data: {address: wallet.address}}))
+    }
+}
+
+const initAddress = (ws = globalThis.webSocket) => {
+    if (isOpen(ws)) {
+        ws.send(JSON.stringify({channel: 'init', data: {address: wallet.address}}))
     }
 }
 

@@ -25,7 +25,12 @@ html(lang="en")
 
         section.container-fluid
             div.container
-                div.text-leader.text-center.mt-2#title Welcome to Aptos Demo Wallet
+                div.text-leader.text-center#title
+                        div Welcome to Aptos Demo Wallet
+                        div.text-small Copyright 2022 by
+                            a.ml-1.no-decor.fg-cyan(href="https://pimenov.com.ua") Serhii Pimenov.
+                            span.ml-1 From Ukraine for Aptos Community.
+
                 div.text-center.mt-4
                     div.text-bold Address
                     a#address.fg-cyan.text-leader.copy-data-to-clipboard.c-pointer( title="Click to copy address to clipboard" )

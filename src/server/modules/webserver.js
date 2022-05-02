@@ -107,20 +107,20 @@ const route = () => {
     app.post('/send-coins', async (req, res) => {
         try {
             let {sender, receiver, amount = 0} = req.body
-            if (receiver.substr(0, 2) === "0x") {
-                receiver = receiver.substr(2)
-            }
+
             assert(sender, "Sender address required")
             assert(receiver, "Receiver address required")
-            assert(receiver.length === 64, "Receiver address length not right")
-            const result = await rest.sendCoins(new Account(req.session.seed), receiver, amount)
+
+            const senderAccount = Account.fromSeed(req.session.seed)
+
+            const result = await aptos.sendCoins(senderAccount, receiver, amount)
             if (result) {
                 res.send({
-                    tx_hash: rest.getLastTransaction().hash
+                    tx_hash: aptos.getLastTransaction().hash
                 })
             } else {
                 res.send({
-                    error: rest.getLastTransaction().vm_status
+                    error: aptos.getLastTransaction().vm_status
                 })
             }
         } catch (e) {
@@ -159,9 +159,9 @@ const route = () => {
     app.post('/charge', async(req, res) => {
         try {
             assert(req.session.wallet, "Authentication required")
-            assert(req.body.authKey, "AuthKey required")
+            assert(req.body.address, "Address required")
 
-            await faucet.fundAddress(req.body.authKey, req.body.amount)
+            await faucet.fundAddress(req.body.address, 1000)
 
             res.send({ok: true})
         } catch (e) {

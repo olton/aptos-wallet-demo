@@ -7,4 +7,5 @@ export const log = (msg, marker = 'info', ...rest) => {
 
 export const info = (msg, ...rest) => log(msg, 'info', ...rest)
 export const alert = (msg, ...rest) => log(msg, 'alert', ...rest)
+export const error = (msg, ...rest) => log(msg, 'error', ...rest)
 export const debug = (msg, ...rest) => log(msg, 'debug', ...rest)

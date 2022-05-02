@@ -43,7 +43,7 @@ updateBalance = data => {
 chargeAccount = async button => {
     const url = '/charge'
     const data = {
-        authKey: wallet.authKey,
+        address: wallet.address,
         amount: 100
     }
     try {
@@ -308,11 +308,11 @@ receiveCoins = async () => {
 
 updateLastSentCoins = data => {
     const coins = data.coins.reverse()
-    const target = $(".sent-coins-list").clear()
+    const list = $(".sent-coins-list").clear()
 
     for(let c of coins) {
-        const {to, amount} = c.data
-        target.append(
+        const {sender, hash, key, sequence_number, type, amount, target, inserted_at, version, gas_used, gas_unit_price, success, vm_status, expiration_timestamp_sec, timestamp} = c
+        list.append(
             $("<li>").html(`
                 <div class="d-flex flex-align-center">
                     <div class="row-icon">
@@ -322,15 +322,19 @@ updateLastSentCoins = data => {
                         <span class="mif-checkmark fg-green mif-2x"></span>
                     </div>
                     <div class="address-wrapper d-none-fs d-block-md">
-                        <span class="address">${shorten(to, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${to}" title="Click to copy address to clipboard"></span>
+                        <span class="address">${shorten(target, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${target}" title="Click to copy address to clipboard"></span>
                     </div>
-                    <div class="amount total ml-auto text-right">${n2f(amount)}</div>
+                    <div class="amount total ml-auto text-right">
+                        <div class="reduce-4">${n2f(amount)}</div>
+                        <div class="ml-2 reduce-4 text-light fg-dark">+ <span class="text-bold">${gas_used * gas_unit_price}</span> <span class="reduce-3">gas</span></div>
+                        <div class="ml-2 pl-2 border-left bd-system text-light fg-dark">${+amount + gas_used * gas_unit_price}</div>
+                    </div>
                 </div>
                 <div class="d-block d-none-md border-top bd-system pt-2">
                     <div class="address-wrapper text-center">
-                        <span class="address">${shorten(to, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${to}" title="Click to copy address to clipboard"></span>
+                        <span class="address">${shorten(target, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${target}" title="Click to copy address to clipboard"></span>
                     </div>
                 </div>
             `)
@@ -340,82 +344,34 @@ updateLastSentCoins = data => {
 
 updateLastReceivedCoins = data => {
     const coins = data.coins.reverse()
-    const target = $(".received-coins-list").clear()
+    const list = $(".received-coins-list").clear()
 
     for(let c of coins) {
-        const {from, amount} = c.data
-        target.append(
+        const {sender, hash, key, sequence_number, type, amount, target, inserted_at, version, gas_used, gas_unit_price, success, vm_status, expiration_timestamp_sec, timestamp} = c
+        list.append(
             $("<li>").html(`
                 <div class="d-flex flex-align-center">
                     <div class="row-icon">
-                        <span class="mif-user mif-2x fg-orange"></span>                    
+                        <span class="mif-user mif-2x fg-orange"></span>
                     </div>
                     <div class="row-icon">
-                        <span class="mif-checkmark fg-green mif-2x"></span>                    
+                        <span class="mif-checkmark fg-green mif-2x"></span>
                     </div>
                     <div class="address-wrapper d-none-fs d-block-md">
-                        <span class="address">${shorten(from, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${from}" title="Click to copy address to clipboard"></span>
-                    </div>                
-                    <div class="amount total ml-auto text-right">${n2f(amount)}</div>                
+                        <span class="address">${shorten(sender, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${sender}" title="Click to copy address to clipboard"></span>
+                    </div>
+                    <div class="amount total ml-auto text-right">
+                        <div class="reduce-4">${n2f(amount)}</div>
+                    </div>
                 </div>
                 <div class="d-block d-none-md border-top bd-system pt-2">
                     <div class="address-wrapper text-center">
-                        <span class="address">${shorten(from, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${from}" title="Click to copy address to clipboard"></span>
-                    </div>                
+                        <span class="address">${shorten(sender, 12)}</span>
+                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${sender}" title="Click to copy address to clipboard"></span>
+                    </div>
                 </div>
             `)
         )
-    }
-}
-
-updateLastTransactions = data => {
-    // console.log(data)
-    const target = $(".sent-coins-list").clear()
-    let index = 1
-    for(let t of data.transactions.reverse()) {
-        const [address, amount] = t.payload.arguments
-        const {type, success, gas_currency_code, gas_used, gas_unit_price, timestamp, hash} = t
-        target.append(
-            $("<li>").html(`
-                <div class="d-flex flex-align-center">
-                    <div class="row-icon">
-                        <span class="mif-user mif-2x fg-cyan"></span>                    
-                    </div>
-                    <div class="row-icon">
-                        <span class="${success ? 'mif-checkmark fg-green' : 'mif-blocked fg-red'} mif-2x"></span>                    
-                    </div>
-                    <div class="address-wrapper d-none-fs d-block-md">
-                        <span class="address">${shorten(address, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${address}" title="Click to copy address to clipboard"></span>
-<!--                        <div class="text-muted reduce-2">Hash: ${shorten(hash, 12)}</div>-->
-                    </div>                
-                    <div class="ml-auto">
-                        <div class="d-flex flex-align-center flex-justify-center">
-                            <div class="text-center" style="line-height: 1">
-                                <div class="amount">${n2f(amount)}</div>                             
-                                <div class="text-small text-muted">
-                                    <span class="reduce-3 text-muted">${gas_currency_code}</span>
-                                    <span>${gas_used}</span> 
-                                    <span class="reduce-2 text-muted">x ${gas_unit_price}</span>                                
-                                </div>                        
-                            </div>
-                            <div class="total mt-1-minus">
-                                <span>${n2f(+(success ? amount : 0) + (gas_used * gas_unit_price))}</span>                            
-                            </div>
-                        </div>
-                    </div>                
-                </div>
-                <div class="d-block d-none-md border-top bd-system pt-2">
-                    <div class="address-wrapper text-center">
-                        <span class="address">${shorten(address, 12)}</span>
-                        <span class="mif-copy ml-2 mt-1 copy-data-to-clipboard c-pointer" data-value="${address}" title="Click to copy address to clipboard"></span>
-                    </div>                
-                </div>
-            `)
-        )
-        index++
-        if (index > 25 ) break
     }
 }
